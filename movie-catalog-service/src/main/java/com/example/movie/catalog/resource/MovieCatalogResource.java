@@ -34,10 +34,6 @@ public class MovieCatalogResource {
 				Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
 				return new CatalogItem(movie.getName(), "something", rating.getRating());
 		}).collect(Collectors.toList());
-		
-		
-		
-		//return Collections.singletonList(new CatalogItem("Winter Soldier", "bucky", 8));
 	}
 
 }
