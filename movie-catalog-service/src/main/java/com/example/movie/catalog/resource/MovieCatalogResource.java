@@ -54,6 +54,7 @@ public class MovieCatalogResource {
 		return ratings.stream().map(rating -> {
 				//Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
 				
+			// communicates with movie-info-service
 				Movie movie = webclientBuilder.build().get()
 						.uri("http://localhost:8082/movies/" + rating.getMovieId())
 						.retrieve()
