@@ -14,6 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.example.movie.catalog.model.CatalogItem;
 import com.example.movie.catalog.model.Movie;
 import com.example.movie.catalog.model.Rating;
+import com.example.movie.catalog.model.UserRating;
 
 @RestController
 @RequestMapping("/catalog")
@@ -41,22 +42,45 @@ public class MovieCatalogResource {
 		}).collect(Collectors.toList());
 	}
 	
+	@RequestMapping("rest/{userId}")
+	public List<CatalogItem> getResrCatalog(@PathVariable("userId") String userId) {
+		
+		
+		
+		UserRating userRating = restTemplate.getForObject("http://ratings-data-service/ratingsdata/user/" + userId, UserRating.class);
+		
+		List<Rating> ratings = userRating.getRatings();
+		
+		return ratings.stream().map(rating -> {
+				Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), Movie.class);
+				return new CatalogItem(movie.getName(), "something", rating.getRating());
+		}).collect(Collectors.toList());
+	}
+	
 	@RequestMapping("webclient/{userId}")
 	public List<CatalogItem> getCatalogAsync(@PathVariable("userId") String userId) {
 		
 		
 		
-		List<Rating> ratings = Arrays.asList(
+		/*List<Rating> ratings = Arrays.asList(
 				new Rating("123", 4),
 				new Rating("124", 5)
-		);
+		);*/
+		
+		// // communicates with ratings-data-service
+		UserRating userRating = webclientBuilder.build().get()
+				.uri("http://ratings-data-service/ratingsdata/user/" + userId)
+				.retrieve()
+				.bodyToMono(UserRating.class)
+				.block();
+		
+		List<Rating> ratings = userRating.getRatings();
 		
 		return ratings.stream().map(rating -> {
-				//Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
 				
 			// communicates with movie-info-service
 				Movie movie = webclientBuilder.build().get()
-						.uri("http://localhost:8082/movies/" + rating.getMovieId())
+						.uri("http://movie-info-service/movies/" + rating.getMovieId())
 						.retrieve()
 						.bodyToMono(Movie.class)
 						.block();
