@@ -59,7 +59,7 @@ public class CurrencyConversionController {
 		log.info("#################");
 		log.info("#################");
 		CurrencyConversionBean response = currencyExchangeProxy.convertCurrency(from, to);
-
+		log.info("########RESPONSE" + response);
 		return new CurrencyConversionBean(response.getId(), from, to, response.getConversionMultiple(), quantity,
 				quantity.multiply(response.getConversionMultiple()), response.getPort());
 	}
