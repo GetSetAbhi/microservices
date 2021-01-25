@@ -20,7 +20,7 @@ public class ConsumerService {
         System.out.println(String.format("#### -> Consumed message -> %s", message));
     }
     
-    @KafkaListener(topics = USER_TOPIC, groupId = USERS_GROUP_ID, containerFactory = "kafkaUserListenerContainerFactory")
+    @KafkaListener(topics = USER_TOPIC, groupId = GROUP_ID, containerFactory = "kafkaUserListenerContainerFactory")
     public void consumeUser(User user) throws IOException {
         System.out.println(String.format("#### -> Received User -> %s", user.getFirstName()));
     }

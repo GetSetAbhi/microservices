@@ -26,7 +26,7 @@ public class KafkaConsumerConfig {
 	
 	private String GROUP_ID = "hybris";
 	
-	private String USERS_GROUP_ID = "userrs";
+	//private String USERS_GROUP_ID = "userrs";
 
 	@Bean
 	public ConsumerFactory<String, String> consumerFactory() {
@@ -47,7 +47,8 @@ public class KafkaConsumerConfig {
 	    
 		Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-		props.put(ConsumerConfig.GROUP_ID_CONFIG, USERS_GROUP_ID);
+		//props.put(ConsumerConfig.GROUP_ID_CONFIG, USERS_GROUP_ID);
+		props.put(ConsumerConfig.GROUP_ID_CONFIG, GROUP_ID);
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, deserializer);
 		return new DefaultKafkaConsumerFactory<>(props, 
