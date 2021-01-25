@@ -27,5 +27,10 @@ public class KafkaTopicConfig {
     public NewTopic topic1() {
          return new NewTopic("hybris-messages", 1, (short) 1);
     }
+    
+    @Bean
+    public NewTopic topic2() {
+         return new NewTopic("hybris-user", 1, (short) 1);
+    }
 }
 	
