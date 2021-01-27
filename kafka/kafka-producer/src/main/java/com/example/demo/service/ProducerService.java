@@ -5,6 +5,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import com.example.models.User;
+import com.google.gson.Gson;
 
 
 @Service
@@ -26,7 +27,9 @@ public class ProducerService {
     }
     
     public void sendUser(User user) {
-        System.out.println(String.format("#### -> Producing message -> %s", user.getFirstName()));
-        this.kafkaUserTemplate.send(USER_TOPIC, user);
+    	String userString = new Gson().toJson(user).toString();
+        System.out.println(String.format("#### -> Producing message -> %s", userString));
+        //this.kafkaUserTemplate.send(USER_TOPIC, userString);
+        this.kafkaTemplate.send(USER_TOPIC, userString);
     }
 }
